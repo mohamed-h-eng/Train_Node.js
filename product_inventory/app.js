@@ -25,6 +25,35 @@ app.get("/",(req,res)=>{
     }
 })
 
+const Product = require("./models/Product")
+app.post("/api/products",async (req,res)=>{
+    try{
+        const product = await Product.create(req.body);
+        res.json({
+            msg:"product read successfully",
+            data:product
+        })
+        console.log("success creating product in inventory")
+    }catch(error){
+        console.log("error creating product in inventory")
+    }
+})
+
+app.get("/api/products",async (req,res)=>{
+    try{
+        let product = await Product.find();
+        if (req.query["category"]){
+            product = await Product.find(req.query);
+        }
+        res.json({
+            msg:"products read successfully",
+            data:product
+        })
+        console.log("success reading product inventory")
+    }catch(error){
+        console.log("error reading product inventory")
+    }
+})
 app.listen(port,()=>{
     console.log("server running ...")
 })
